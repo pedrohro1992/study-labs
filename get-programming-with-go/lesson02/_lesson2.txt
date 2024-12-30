@@ -1,0 +1,79 @@
+PERFORMANDO CALCULOS 
+
+Para realizer calculos em golang, usamos os operadores aritméticos providos 
+pela linguagem  (+, -, *, /,e %) para adicao, subtracao, multiplicacao, divisao
+e modulo
+
+O operator modulo (%) obtem o resto de uma divisao (por exemplo, 42 % 10 e 2)
+
+No exemplo hello-mars/mars.go sao utilizados os operadores aritméticos para realizar 
+o calculo de peso em marte, tambem sao feitas varias chamadas a funcao Print com o 
+objetivo de printar os resultados na tela, uma outra forma de realizar essa chamada 
+e passando todos os argumentos separados por virgulas(,). 
+Um argumento par o Println pode ser texto, numeroi ou expressoes matematicas
+
+
+FORMATANDO PRINTS 
+
+As funcoes Print e Println tem um parente que da mais controle sobre o output. Usando 
+Printf, se pode inserir valores em qualquer lugar no texto
+(Codigo de exemplo em printf/fmt.go)
+
+Diferente da Print e da Println, o primeiro argumento da Printf vai sempre ser um texto 
+o texto contain o verbo de formatacao %v, o que substitui para o valor da expressao no 
+segundo argumento
+
+Println sempre move para a proxima linha automaticamente, Printf e Print nao, toda vez 
+que existe a necessiade de mover para uma proxima linha, precisa usar o /n
+
+Se varios verbos de formatacao sao especificados, A funcao Printf vai substiuir varios 
+valores em ordem
+(Codigo de exemplo em printf/fmt.go)
+
+Alem de fazer a substiuicao valores em qualquer lugar de uma sentencia, Printf tambem ajuda 
+a fazer o alinhamento do texto
+Especificar a largunra como parte do verbo de formatacao, como (%4v) para preecher o valor 
+com uma largura de 4 pads de charecteres, 4 positicos para a direita e 4 negativcos para a esgerda
+(Codigo de exemplo em printf/fmt.go)
+
+
+CONSTANTES E VARIAVIES
+
+Os calculos realizados em hello-mars/mars.go sao perfomadas em cima de numeros literais
+Nao esta claro o que esses numeros siginificam, especialmente valores como 0.3783
+Variaveis e constantes podem ajudar provendo nomes descritivos
+(Codigo de exemnplo em listing/lightspeed.go)
+
+PEGANDO ATALHOS
+
+Quando se declara variaveis ou contantes, pode se declarar cada uma na sua propria lista, assim:
+  var distance = 56000000
+  var speed = 100800
+
+Ou as declarar como grupos:
+  var (
+    distance = 56000000
+    speed = 100800
+  )
+
+Ou tambem existe a opcao de decalarar multiplas variaveis em uma unica linha 
+
+  var distance, speed = 56000000, 100800
+
+
+OPERADORES DE ATRIBUICAO E INCREMENTO 
+
+Existem alguns atalhos para executar atribuições com outras operações. As duas ultimas linhas da 
+lista abaixo sao equivalentes:
+  var weight = 149.0
+  weight = weight * 0.3783
+  weight *= 0.3783
+
+Incrementar mais um tem um atalho adicional:
+  var age = 41
+  age = age + 1 // Feliz aniversario
+  age += 1 
+  age++
+
+Tambem se pode decrementar com "count--" ou operacoes mais curtas como 
+price /= 2 

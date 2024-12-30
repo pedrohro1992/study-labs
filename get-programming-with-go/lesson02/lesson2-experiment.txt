@@ -1,0 +1,12 @@
+EXERCICIO 
+
+Escrever um programa que calcula a velocidade necessaria 
+para viajar uma distancia de 56,000,000 em 28 dias
+
+constantes:
+  distance = 56000000
+  travelDays = 28
+
+calculos necessarios:
+  fazer a divisao da distancia pelo tempo (distance/travelDays)
+  pegar o resultado da divisao e dividir por 24
