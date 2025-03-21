@@ -16,6 +16,7 @@ const (
 
 type Deploy struct {
 	MetadataDeploy `json:"metadata"`
+	Template       `json:"template"`
 }
 
 type MetadataDeploy struct {
@@ -23,8 +24,20 @@ type MetadataDeploy struct {
 	Labels map[string]string `json:"labels"`
 }
 
-func (m MetadataDeploy) isEmpty() bool {
-	return m.Name == ""
+type Template struct {
+	Spec Spec `json:"spec"`
+}
+
+type Spec struct {
+	Containers
+}
+
+type Containers struct {
+	NameContainer string `json:"name"`
+}
+
+func (c Containers) isNull() bool {
+	return c.NameContainer == ""
 }
 
 func ValidateDeploymentName(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +46,7 @@ func ValidateDeploymentName(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	} else if arReview.Request == nil {
-		http.Error(w, "invalid request body", http.StatusBadRequest)
+		http.Error(w, "invalid request body 1234", http.StatusBadRequest)
 		fmt.Println("Erro de Request")
 		return
 	}
@@ -44,8 +57,8 @@ func ValidateDeploymentName(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(raw, &deploy); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
-	} else if deploy.MetadataDeploy.isEmpty() {
-		http.Error(w, "invalid request body", http.StatusBadRequest)
+	} else if deploy.Spec.isNull() {
+		http.Error(w, "invalid request body 666tapa", http.StatusBadRequest)
 	}
 
 	arReview.Response = &v1beta1.AdmissionResponse{
@@ -53,7 +66,7 @@ func ValidateDeploymentName(w http.ResponseWriter, r *http.Request) {
 		Allowed: true,
 	}
 
-	if len(deploy.MetadataDeploy.Labels) == 0 || deploy.MetadataDeploy.Labels["app"] != "nginx" {
+	if len(deploy.MetadataDeploy.Labels) == 0 || deploy.Spec.NameContainer != "nginx" {
 		arReview.Response.Allowed = false
 		arReview.Response.Result = &metav1.Status{
 			Message: "Nome deve ser nginx",
