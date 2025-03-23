@@ -26,4 +26,4 @@ spec:
             cpu: "3"
           requests:
             memory: "256Mi"
-            cpu: "3"
+            cpu: "1"
