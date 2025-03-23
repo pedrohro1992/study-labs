@@ -6,9 +6,29 @@ import (
 	"net/http"
 	"strconv"
 
+	admissionv1 "k8s.io/api/admission/v1"
 	"k8s.io/api/admission/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+func ValidateDeploymentTag(w http.ResponseWriter, r *http.Request) {
+	req, err := extractAdmission(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Read the deploy data
+	d, err := validateDeploy(req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var resp *admissionv1.AdmissionReview
+	if d.Spec.Template.Spec.Containers[0].Resources.Limits.Cpu().AsApproximateFloat64().AsInt64() == 2 {
+	}
+}
 
 func ValidateDeploymentName(w http.ResponseWriter, r *http.Request) {
 	arReview := v1beta1.AdmissionReview{}
