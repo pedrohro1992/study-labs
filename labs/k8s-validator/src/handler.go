@@ -26,7 +26,12 @@ func ValidateDeploymentTag(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var resp *admissionv1.AdmissionReview
-	if d.Spec.Template.Spec.Containers[0].Resources.Limits.Cpu().AsApproximateFloat64().AsInt64() == 2 {
+	cpu, err := d.Spec.Template.Spec.Containers[0].Resources.Limits.Cpu().AsInt64()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if cpu == 2 {
 	}
 }
 
