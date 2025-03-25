@@ -16,19 +16,26 @@ spec:
 
     spec:
       containers:
-      - image: pedroramosolivera/validation-limits-webhook:0.0.1
+      - image: pedroramosolivera/validation-limits-webhook:0.1.0
 
         name: validation-limits-webhook
         ports:
 
-          - containerPort: 8443
+        - containerPort: 8443
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /etc/certs/webhook
 
           name: tls
           readOnly: true
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "0.5"
+          requests:
+            memory: "256Mi"
+            cpu: "0.5"
       volumes:
-        - name: tls
-          secret:
-            secretName: validate-webhook-cert
+      - name: tls
+        secret:
+          secretName: validate-webhook-cert

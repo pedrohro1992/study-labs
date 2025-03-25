@@ -12,12 +12,12 @@ import (
 
 func validateDeploy(req *admissionv1.AdmissionReview) (*appsv1.Deployment, error) {
 	if req.Request.Kind.Kind != "Deployment" {
-		return nil, errors.New("Apenas deploy sao suportados")
+		return nil, errors.New("apenas deploy sao suportados")
 	}
 
 	var d appsv1.Deployment
 	if err := json.Unmarshal(req.Request.Object.Raw, &d); err != nil {
-		return nil, errors.New("Nao deu pra ler o deploy")
+		return nil, errors.New("nao deu pra ler o deploy")
 	}
 
 	return &d, nil

@@ -11,7 +11,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func ValidateDeploymentTag(w http.ResponseWriter, r *http.Request) {
+func ValidateContainerName(w http.ResponseWriter, r *http.Request) {
 	req, err := extractAdmission(r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -26,13 +26,24 @@ func ValidateDeploymentTag(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var resp *admissionv1.AdmissionReview
-	cpu, err := d.Spec.Template.Spec.Containers[0].Resources.Limits.Cpu().AsInt64()
+	var containerName = d.Spec.Template.Spec.Containers[0].Name
+
+	fmt.Println(containerName)
+	if containerName == "nginx" {
+		resp = response(req.Request.UID, true, http.StatusAccepted, "container com o nome certo")
+	} else {
+		resp = response(req.Request.UID, false, http.StatusForbidden, fmt.Sprintf("nome %s fora do padrao", containerName))
+	}
+	fmt.Println(resp)
+
+	w.Header().Set("Content-Type", "application/json")
+	j, err := json.Marshal(resp)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "couldn't marshal admission response", http.StatusInternalServerError)
 		return
 	}
-	if cpu == 2 {
-	}
+
+	fmt.Fprintf(w, "%s", j)
 }
 
 func ValidateDeploymentName(w http.ResponseWriter, r *http.Request) {
