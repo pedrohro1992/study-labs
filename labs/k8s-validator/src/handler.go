@@ -6,9 +6,45 @@ import (
 	"net/http"
 	"strconv"
 
+	admissionv1 "k8s.io/api/admission/v1"
 	"k8s.io/api/admission/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+func ValidateContainerName(w http.ResponseWriter, r *http.Request) {
+	req, err := extractAdmission(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Read the deploy data
+	d, err := validateDeploy(req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var resp *admissionv1.AdmissionReview
+	var containerName = d.Spec.Template.Spec.Containers[0].Name
+
+	fmt.Println(containerName)
+	if containerName == "nginx" {
+		resp = response(req.Request.UID, true, http.StatusAccepted, "container com o nome certo")
+	} else {
+		resp = response(req.Request.UID, false, http.StatusForbidden, fmt.Sprintf("nome %s fora do padrao", containerName))
+	}
+	fmt.Println(resp)
+
+	w.Header().Set("Content-Type", "application/json")
+	j, err := json.Marshal(resp)
+	if err != nil {
+		http.Error(w, "couldn't marshal admission response", http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprintf(w, "%s", j)
+}
 
 func ValidateDeploymentName(w http.ResponseWriter, r *http.Request) {
 	arReview := v1beta1.AdmissionReview{}
