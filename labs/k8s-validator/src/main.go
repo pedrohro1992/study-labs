@@ -6,7 +6,9 @@ import (
 )
 
 const (
-	port = ":8080"
+	httpsPort = ":8443"
+	cert      = "/etc/certs/webhook/tls.crt"
+	key       = "/etc/certs/webhook/tls.key"
 )
 
 func main() {
@@ -14,5 +16,5 @@ func main() {
 
 	cert := "/etc/certs/webhook/tls.crt"
 	key := "/etc/certs/webhook/tls.key"
-	log.Fatalln(http.ListenAndServeTLS(":8443", cert, key, nil))
+	log.Fatalln(http.ListenAndServeTLS(httpsPort, cert, key, nil))
 }
