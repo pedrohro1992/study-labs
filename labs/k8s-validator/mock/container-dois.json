@@ -1,0 +1,118 @@
+{
+  "kind": "AdmissionReview",
+  "apiVersion": "admission.k8s.io/v1",
+  "request": {
+    "uid": "920126a7-2a1b-4ff4-aa6d-04d26c512826",
+    "kind": {
+      "group": "apps",
+      "version": "v1",
+      "kind": "Deployment"
+    },
+    "resource": {
+      "group": "apps",
+      "version": "v1",
+      "resource": "deployments"
+    },
+    "requestKind": {
+      "group": "apps",
+      "version": "v1",
+      "kind": "Deployment"
+    },
+    "requestResource": {
+      "group": "apps",
+      "version": "v1",
+      "resource": "deployments"
+    },
+    "name": "nginx-deployment",
+    "namespace": "testes",
+    "operation": "CREATE",
+    "userInfo": {
+      "username": "kube-review",
+      "uid": "8181be16-7b52-4981-968a-41b1dae75792"
+    },
+    "object": {
+      "kind": "Deployment",
+      "apiVersion": "apps/v1",
+      "metadata": {
+        "name": "nginx-deployment",
+        "namespace": "testes",
+        "creationTimestamp": null,
+        "labels": {
+          "app": "nginx"
+        }
+      },
+      "spec": {
+        "replicas": 3,
+        "selector": {
+          "matchLabels": {
+            "app": "nginx"
+          }
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "app": "nginx"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "nginx",
+                "image": "nginx:1.14.2",
+                "ports": [
+                  {
+                    "containerPort": 80
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "3",
+                    "memory": "256Mi"
+                  },
+                  "requests": {
+                    "cpu": "1",
+                    "memory": "256Mi"
+                  }
+                }
+              },
+              {
+                "name": "myjob",
+                "image": "alpine:latest",
+                "command": [
+                  "sh",
+                  "-c",
+                  "echo \"logging\" \u003e /opt/logs.txt"
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "3",
+                    "memory": "256Mi"
+                  },
+                  "requests": {
+                    "cpu": "1",
+                    "memory": "256Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "data",
+                    "mountPath": "/opt"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "strategy": {}
+      },
+      "status": {}
+    },
+    "oldObject": null,
+    "dryRun": true,
+    "options": {
+      "kind": "CreateOptions",
+      "apiVersion": "meta.k8s.io/v1"
+    }
+  }
+}

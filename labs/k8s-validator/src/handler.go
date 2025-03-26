@@ -11,6 +11,42 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+func ValidateLimitsWithName(w http.ResponseWriter, r *http.Request) {
+	req, err := extractAdmission(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Read the deploy data
+	d, err := validateDeploy(req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var resp *admissionv1.AdmissionReview
+	checkContainer := checkContainerName(*d)
+	var checkCpu int64 = 3
+	cpu, _ := d.Spec.Template.Spec.Containers[checkContainer].Resources.Limits.Cpu().AsInt64()
+	if cpu < checkCpu {
+		resp = response(req.Request.UID, false, http.StatusForbidden, fmt.Sprintf("CPU Limits esta com o valor de %v o que e menor que o padrao %v", cpu, checkCpu))
+	} else {
+		resp = response(req.Request.UID, true, http.StatusAccepted, "Valores corretos")
+	}
+
+	fmt.Println(resp)
+
+	w.Header().Set("Content-Type", "application/json")
+	j, err := json.Marshal(resp)
+	if err != nil {
+		http.Error(w, "couldn't marshal admission response", http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprintf(w, "%s", j)
+}
+
 func ValidateContainerName(w http.ResponseWriter, r *http.Request) {
 	req, err := extractAdmission(r)
 	if err != nil {
