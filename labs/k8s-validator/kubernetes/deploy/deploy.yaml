@@ -16,7 +16,7 @@ spec:
 
     spec:
       containers:
-      - image: pedroramosolivera/validation-limits-webhook:0.1.0
+      - image: pedroramosolivera/validation-limits-webhook:1.0.0
 
         name: validation-limits-webhook
         ports:

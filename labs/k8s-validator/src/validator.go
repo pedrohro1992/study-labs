@@ -19,6 +19,8 @@ func checkContainerName(d appsv1.Deployment) int {
 			if d.Spec.Template.Spec.Containers[i].Name == deploymentName {
 				nameCounter = i
 				break
+			} else {
+				nameCounter = 0
 			}
 		}
 	}

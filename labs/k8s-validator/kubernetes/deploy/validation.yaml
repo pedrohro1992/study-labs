@@ -1,23 +1,23 @@
-# apiVersion: admissionregistration.k8s.io/v1
-# kind: ValidatingWebhookConfiguration
-# metadata:
-#   name: "deployment-validation-webhook"
-# webhooks:
-#   - name: "deployment-validation-webhook.homelab.io"
-#     rules:
-#       - apiGroups: ["apps"]
-#         apiVersions: ["v1", "v1beta1"]
-#         operations: ["CREATE", "UPDATE"]
-#         resources: ["deployments", "replicasets"]
-#         scope: "*"
-#     clientConfig:
-#       service:
-#         namespace: webhooks
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: "deployment-validation-webhook"
+webhooks:
+- name: "deployment-validation-webhook.homelab.io"
+  rules:
+  - apiGroups: [ "apps" ]
+    apiVersions: [ "v1", "v1beta1" ]
+    operations: [ "CREATE", "UPDATE" ]
+    resources: [ "deployments", "replicasets" ]
+    scope: "*"
+  clientConfig:
+    service:
+      namespace: webhooks
 
-#         name: validation-limits-webhook
-#         path: /validatedeploy
-#         port: 443
-#       caBundle: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJXakNDQVFDZ0F3SUJBZ0lRWUdncEZBSXF2dDJ2Z3VnT0doNHl4REFLQmdncWhrak9QUVFEQWpBTk1Rc3cKQ1FZRFZRUURFd0pqWVRBZUZ3MHlOVEF6TWpNd01qUXhNakZhRncweU5UQTJNakV3TWpReE1qRmFNQTB4Q3pBSgpCZ05WQkFNVEFtTmhNRmt3RXdZSEtvWkl6ajBDQVFZSUtvWkl6ajBEQVFjRFFnQUVzNURVNVRlVTQ5SjJjL28vCmtTdk9QTzFsclV3WTNhT1dkbzlsYitkaTFacksvVUQ4NnMrQ3JrZUlzMzVlYjNJcGJ0WmdQMkxMRU9NeDdxdkoKSmtHendhTkNNRUF3RGdZRFZSMFBBUUgvQkFRREFnS2tNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwTwpCQllFRk1UamhoeFl2MG5SZG1Ud1BaNFRDTFQ2bnl3eU1Bb0dDQ3FHU000OUJBTUNBMGdBTUVVQ0lEU29hdnFhCjR2VFNnWU1POFAwN01xSDZLeTdvcVk1K01ZNDNFYjF2U3Y0ZEFpRUFsa2NZaFJwTXU2YW5FSmt6Z29PSVhMREsKd3IrcjIxb0FJT1dOQXNPMlRBUT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=" # Results of `kubectl config view --raw --minify --flatten -o jsonpath='{.clusters[].cluster.certificate-authority-data}'`
-#     admissionReviewVersions: ["v1"]
-#     sideEffects: None
-#     timeoutSeconds: 2
+      name: validation-limits-webhook
+      path: /validatedeploy
+      port: 443
+    caBundle: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJXakNDQVFDZ0F3SUJBZ0lRWUdncEZBSXF2dDJ2Z3VnT0doNHl4REFLQmdncWhrak9QUVFEQWpBTk1Rc3cKQ1FZRFZRUURFd0pqWVRBZUZ3MHlOVEF6TWpNd01qUXhNakZhRncweU5UQTJNakV3TWpReE1qRmFNQTB4Q3pBSgpCZ05WQkFNVEFtTmhNRmt3RXdZSEtvWkl6ajBDQVFZSUtvWkl6ajBEQVFjRFFnQUVzNURVNVRlVTQ5SjJjL28vCmtTdk9QTzFsclV3WTNhT1dkbzlsYitkaTFacksvVUQ4NnMrQ3JrZUlzMzVlYjNJcGJ0WmdQMkxMRU9NeDdxdkoKSmtHendhTkNNRUF3RGdZRFZSMFBBUUgvQkFRREFnS2tNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwTwpCQllFRk1UamhoeFl2MG5SZG1Ud1BaNFRDTFQ2bnl3eU1Bb0dDQ3FHU000OUJBTUNBMGdBTUVVQ0lEU29hdnFhCjR2VFNnWU1POFAwN01xSDZLeTdvcVk1K01ZNDNFYjF2U3Y0ZEFpRUFsa2NZaFJwTXU2YW5FSmt6Z29PSVhMREsKd3IrcjIxb0FJT1dOQXNPMlRBUT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=" # Results of `kubectl config view --raw --minify --flatten -o jsonpath='{.clusters[].cluster.certificate-authority-data}'`
+  admissionReviewVersions: [ "v1" ]
+  sideEffects: None
+  timeoutSeconds: 2

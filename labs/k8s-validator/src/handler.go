@@ -29,6 +29,7 @@ func ValidateLimitsWithName(w http.ResponseWriter, r *http.Request) {
 	checkContainer := checkContainerName(*d)
 	var checkCpu int64 = 3
 	cpu, _ := d.Spec.Template.Spec.Containers[checkContainer].Resources.Limits.Cpu().AsInt64()
+
 	if cpu < checkCpu {
 		resp = response(req.Request.UID, false, http.StatusForbidden, fmt.Sprintf("CPU Limits esta com o valor de %v o que e menor que o padrao %v", cpu, checkCpu))
 	} else {
